@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>
+      Intro to MapView - Create a 2D map | Sample | ArcGIS API for JavaScript
+      4.19
+    </title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.19/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.19/"></script>
+
+    <script>
+      require(["esri/Map", "esri/views/MapView","esri/layers/FeatureLayer","esri/widgets/ScaleBar","esri/widgets/Legend"], function(Map, MapView,FeatureLayer,ScaleBar,Legend) {
+       var featurelayer = new FeatureLayer({url:"http://www.arcgisonline.cn/server/rest/services/Hosted/CN_34Capital_Population20210421/FeatureServer"});
+        
+        const map = new Map({
+          basemap: "osm",
+          layers:[featurelayer]
+        });
+
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: 4,
+          center: [121, 20] // longitude, latitude
+        });
+        
+        var scaleBar = new ScaleBar({
+         view: view,
+         style:"ruler",
+         unit:"metric"
+         
+        });
+    // Add widget to the bottom left corner of the view
+      view.ui.add(scaleBar, {
+        position: "bottom-left"
+    });
+       
+       var legend = new Legend({
+      view: view,
+      layerInfos: [{
+      layer: featurelayer,
+      title: "省会人口"
+  }]
+});
+
+view.ui.add(legend, "bottom-right"); 
+        
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
